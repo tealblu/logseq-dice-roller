@@ -1,0 +1,10 @@
+{
+  "name": "Logseq Dice Roller",
+  "packageManager": "yarn@4.1.0",
+  "devDependencies": {
+    "parcel": "^2.11.0"
+  },
+  "logseq": {
+    "id": "_n6w7lt1u6"
+  }
+}
