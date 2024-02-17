@@ -1,10 +1,21 @@
 {
-  "name": "Logseq Dice Roller",
-  "packageManager": "yarn@4.1.0",
+  "name": "logseq-hello-world",
+  "version": "0.0.1",
   "devDependencies": {
+    "@logseq/libs": "^0.0.1-alpha.29",
     "parcel": "^2.11.0"
   },
+  "browserslist": [
+    "chrome 80"
+  ],
   "logseq": {
-    "id": "_n6w7lt1u6"
+    "id": "_edodonfur",
+    "icon": "logseq.png"
+  },
+  "dependencies": {
+    "logseq": "^0.0.5"
+  },
+  "scripts": {
+    "build": "parcel index.ts"
   }
 }
