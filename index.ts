@@ -9,7 +9,7 @@ function main () {
         'roll d100',
         async () => {
             const roll = Math.floor(Math.random() * 100) + 1
-            await logseq.Editor.insertAtEditingCursor(`${roll}`)
+            await logseq.Editor.insertAtEditingCursor(`d100: ${roll}`)
         }
     )
 }

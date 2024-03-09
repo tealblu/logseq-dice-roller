@@ -586,7 +586,7 @@ function main() {
     // Add slash command
     logseq.Editor.registerSlashCommand("roll d100", async ()=>{
         const roll = Math.floor(Math.random() * 100) + 1;
-        await logseq.Editor.insertAtEditingCursor(`${roll}`);
+        await logseq.Editor.insertAtEditingCursor(`d100: ${roll}`);
     });
 }
 logseq.ready(main).catch(console.error);
@@ -3710,6 +3710,6 @@ logseq.ready(main).catch(console.error);
     })();
 });
 
-},{}]},["hdaM1","1jwFz"], "1jwFz", "parcelRequire357b")
+},{}]},["hdaM1","1jwFz"], "1jwFz", "parcelRequire22c8")
 
 //# sourceMappingURL=index.js.map

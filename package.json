@@ -1,5 +1,5 @@
 {
-  "name": "logseq-hello-world",
+  "name": "logseq-dice-roller",
   "version": "0.0.1",
   "main": "dist/index.js",
   "devDependencies": {
@@ -11,7 +11,7 @@
   ],
   "logseq": {
     "id": "_edodonfur",
-    "title": "Logseq Plugin",
+    "title": "Logseq Dice Roller",
     "icon": "logseq.png"
   },
   "dependencies": {
