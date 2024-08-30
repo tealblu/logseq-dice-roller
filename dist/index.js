@@ -580,6 +580,61 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 
 },{}],"1jwFz":[function(require,module,exports) {
 var _libs = require("@logseq/libs");
+function evaluateExpression(expression) {
+    // Remove all whitespace from the expression
+    expression = expression.replace(/\s+/g, "");
+    // Function to handle basic operations
+    const operate = (a, b, operator)=>{
+        switch(operator){
+            case "+":
+                return a + b;
+            case "-":
+                return a - b;
+            case "*":
+                return a * b;
+            case "/":
+                return a / b;
+            default:
+                throw new Error(`Unknown operator: ${operator}`);
+        }
+    };
+    // Function to evaluate the expression
+    const parseExpression = (expr)=>{
+        const tokens = expr.match(/(\d+|\+|\-|\*|\/|\(|\))/g);
+        if (!tokens) throw new Error("Invalid expression");
+        const outputQueue = [];
+        const operatorStack = [];
+        const precedence = {
+            "+": 1,
+            "-": 1,
+            "*": 2,
+            "/": 2
+        };
+        tokens.forEach((token)=>{
+            if (!isNaN(Number(token))) outputQueue.push(Number(token));
+            else if ("+-*/".includes(token)) {
+                while(operatorStack.length && precedence[operatorStack[operatorStack.length - 1]] >= precedence[token])outputQueue.push(operatorStack.pop());
+                operatorStack.push(token);
+            } else if (token === "(") operatorStack.push(token);
+            else if (token === ")") {
+                while(operatorStack[operatorStack.length - 1] !== "(")outputQueue.push(operatorStack.pop());
+                operatorStack.pop(); // Remove the '(' from the stack
+            }
+        });
+        while(operatorStack.length)outputQueue.push(operatorStack.pop());
+        const resultStack = [];
+        outputQueue.forEach((token)=>{
+            if (typeof token === "number") resultStack.push(token);
+            else {
+                const b = resultStack.pop();
+                const a = resultStack.pop();
+                resultStack.push(operate(a, b, token));
+            }
+        });
+        return resultStack[0];
+    };
+    return parseExpression(expression);
+}
 // main function
 function main() {
     // add slash command for dynamic command parsing (e.g. /roll 2d6+10)
@@ -610,7 +665,26 @@ function main() {
         // insert result into block
         logseq.Editor.insertAtEditingCursor(result);
     });
-    logseq.App.showMsg("Dice Roller loaded :)");
+    logseq.Editor.registerSlashCommand("calc", async ()=>{
+        // get content of current block
+        const content = await logseq.Editor.getEditingBlockContent();
+        // if no expression found, return
+        if (!content) {
+            logseq.App.showMsg("No expression found :(");
+            return;
+        }
+        // evaluate expression
+        let result;
+        try {
+            result = evaluateExpression(content);
+        } catch (e) {
+            logseq.App.showMsg(`Error: ${e.message}`);
+            return;
+        }
+        // insert result into block
+        logseq.Editor.insertAtEditingCursor(`: ${result}`);
+    });
+    logseq.App.showMsg("indiLib loaded :)");
 }
 logseq.ready(main).catch(console.error);
 
